@@ -1,6 +1,7 @@
 export { DocsListIndex, DocsSidebar } from "./docs-sidebar"
 export { ChartsListIndex, ChartsSidebar } from "./charts-sidebar"
 export { CursorsListIndex, CursorsSidebar } from "./cursors-sidebar"
+export { TextListIndex, TextSidebar } from "./text-sidebar"
 export {
   BackgroundsListIndex,
   BackgroundsSidebar,

@@ -7,6 +7,7 @@
 import { readFileSync } from "node:fs"
 
 import { cursorRegistryItems } from "./registry-cursor-items.mjs"
+import { textRegistryItems } from "./registry-text-items.mjs"
 
 /** @typedef {{ path: string, type: string, target?: string }} RegistryFileDef */
 /** @typedef {{
@@ -23176,5 +23177,6 @@ function withSoftSurfaceCssVars(item) {
 export const registryItems = [
   ...registryItemsRaw,
   ...cursorRegistryItems,
+  ...textRegistryItems,
 ]
   .map(withSoftSurfaceCssVars)

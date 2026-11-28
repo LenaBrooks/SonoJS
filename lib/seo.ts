@@ -113,10 +113,15 @@ function twitterImages(
 /** Append kind only when the title does not already end with that word. */
 export function withKindSuffix(
   title: string,
-  kind: "chart" | "cursor"
+  kind: "chart" | "cursor" | "text"
 ): string {
   const trimmed = title.trim()
-  const pattern = kind === "chart" ? /\bcharts?\s*$/i : /\bcursors?\s*$/i
+  const pattern =
+    kind === "chart"
+      ? /\bcharts?\s*$/i
+      : kind === "cursor"
+        ? /\bcursors?\s*$/i
+        : /\btext\s*$/i
   if (pattern.test(trimmed)) return trimmed
   return `${trimmed} ${kind}`
 }
@@ -365,6 +370,20 @@ export function cursorMetadata(
     title: displayTitle,
     description: `Interactive ${title} demo for SonoJS - preview, install command, and source.`,
     path: `/cursors/${id}`,
+    index,
+  })
+}
+
+export function textMetadata(
+  id: string,
+  title: string,
+  index: boolean
+): Metadata {
+  const displayTitle = withKindSuffix(title, "text")
+  return pageMetadata({
+    title: displayTitle,
+    description: `Interactive ${title} demo for SonoJS - preview, install command, and source.`,
+    path: `/text/${id}`,
     index,
   })
 }

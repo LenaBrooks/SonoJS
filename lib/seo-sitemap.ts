@@ -14,6 +14,7 @@ import { getPopupsPages } from "@/lib/popups-nav"
 import { getCarouselsPages } from "@/lib/carousels-nav"
 import { backgroundsCatalog, backgroundHref } from "@/lib/backgrounds-catalog"
 import { cursorsCatalog, cursorHref } from "@/lib/cursors-catalog"
+import { textCatalog, textHref } from "@/lib/text-catalog"
 import { getDocsComponentPages, getDocsGuidePages } from "@/lib/docs-nav"
 import { legalNav } from "@/lib/legal-nav"
 import { templateProjects } from "@/lib/templates-catalog"
@@ -63,6 +64,7 @@ function appPageFileCandidates(href: string): string[] {
 export function sitemapPathExists(href: string): boolean {
   const normalized = normalizePath(href)
   if (normalized.startsWith("/cursors/view/")) return false
+  if (normalized.startsWith("/text/view/")) return false
   if (normalized.startsWith("/charts/view/")) {
     const id = normalized.slice("/charts/view/".length)
     if (!id || id.includes("/")) return false
@@ -76,6 +78,11 @@ export function sitemapPathExists(href: string): boolean {
     const id = normalized.slice("/cursors/".length)
     if (!id || id.includes("/")) return false
     return cursorsCatalog.some((e) => e.id === id && e.status === "ported")
+  }
+  if (normalized.startsWith("/text/")) {
+    const id = normalized.slice("/text/".length)
+    if (!id || id.includes("/")) return false
+    return textCatalog.some((e) => e.id === id && e.status === "ported")
   }
   if (normalized.startsWith("/backgrounds/view/")) return false
   if (normalized.startsWith("/backgrounds/")) {
@@ -135,6 +142,7 @@ export function buildSitemapPaths(): string[] {
   pushUnique(paths, "/blocks")
   pushUnique(paths, "/charts")
   pushUnique(paths, "/cursors")
+  pushUnique(paths, "/text")
   pushUnique(paths, "/3d")
   pushUnique(paths, "/ai")
   pushUnique(paths, "/popups")
@@ -185,6 +193,10 @@ export function buildSitemapPaths(): string[] {
   for (const entry of cursorsCatalog) {
     if (entry.status !== "ported") continue
     pushUnique(paths, cursorHref(entry.id))
+  }
+  for (const entry of textCatalog) {
+    if (entry.status !== "ported") continue
+    pushUnique(paths, textHref(entry.id))
   }
   for (const entry of backgroundsCatalog) {
     pushUnique(paths, backgroundHref(entry.id))

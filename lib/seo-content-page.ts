@@ -5,9 +5,11 @@ import {
   isChartCategory,
 } from "@/lib/charts-catalog"
 import { cursorsCatalog } from "@/lib/cursors-catalog"
+import { textCatalog } from "@/lib/text-catalog"
 import { getBlocksCurrentLabel } from "@/lib/blocks-nav"
 import { getChartsCurrentLabel } from "@/lib/charts-nav"
 import { getCursorsCurrentLabel } from "@/lib/cursors-nav"
+import { getTextCurrentLabel } from "@/lib/text-nav"
 import {
   DOCS_GUIDE_PAGE_DESCRIPTIONS,
   DOCS_GUIDE_PAGE_TITLES,
@@ -40,6 +42,7 @@ const CONTENT_ROOT_PREFIXES = [
   "/charts",
   "/ai",
   "/cursors",
+  "/text",
 ] as const
 
 const HUB_PAGES: Record<string, { title: string; description: string }> = {
@@ -67,6 +70,11 @@ const HUB_PAGES: Record<string, { title: string; description: string }> = {
     description:
       "Preview installable cursor effects for React, then add them with the CLI.",
   },
+  "/text": {
+    title: "Text",
+    description:
+      "Preview installable animated text effects for React, then add them with the CLI.",
+  },
 }
 
 function isDocsGuidePath(path: string): path is DocsGuidePagePath {
@@ -85,6 +93,9 @@ function schemaTypeForPath(normalized: string): ContentJsonLdSchemaType | null {
     if (isChartCategory(segment)) return "WebPage"
   }
   if (normalized.startsWith("/cursors/") && normalized !== "/cursors") {
+    return "CreativeWork"
+  }
+  if (normalized.startsWith("/text/") && normalized !== "/text") {
     return "CreativeWork"
   }
   return null
@@ -112,6 +123,12 @@ function isCursorDetailIndexable(pathname: string): boolean {
   return entry?.status === "ported"
 }
 
+function isTextDetailIndexable(pathname: string): boolean {
+  const id = pathname.slice("/text/".length)
+  const entry = textCatalog.find((e) => e.id === id)
+  return entry?.status === "ported"
+}
+
 export function isContentJsonLdEligiblePath(pathname: string): boolean {
   const normalized = normalizePath(pathname)
   if (!isBreadcrumbEligiblePath(normalized)) return false
@@ -134,6 +151,14 @@ export function isContentJsonLdEligiblePath(pathname: string): boolean {
     !normalized.startsWith("/cursors/view")
   ) {
     return isCursorDetailIndexable(normalized)
+  }
+
+  if (
+    normalized.startsWith("/text/") &&
+    normalized !== "/text" &&
+    !normalized.startsWith("/text/view")
+  ) {
+    return isTextDetailIndexable(normalized)
   }
 
   return schemaTypeForPath(normalized) !== null
@@ -240,6 +265,18 @@ export function resolveContentPage(
     const label = getCursorsCurrentLabel(normalized)
     if (!label) return null
     const title = withKindSuffix(label, "cursor")
+    return {
+      pathname: normalized,
+      title,
+      description: `Interactive ${label} demo for SonoJS - preview, install command, and source.`,
+      schemaType,
+    }
+  }
+
+  if (normalized.startsWith("/text/") && normalized !== "/text") {
+    const label = getTextCurrentLabel(normalized)
+    if (!label) return null
+    const title = withKindSuffix(label, "text")
     return {
       pathname: normalized,
       title,

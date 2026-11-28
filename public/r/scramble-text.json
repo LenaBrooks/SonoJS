@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scramble-text",
+  "type": "registry:text",
+  "title": "Scramble Text",
+  "description": "Text that decodes from random glyphs, left to right, on hover or focus.",
+  "access": "member",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "components/text/scramble-text/scramble-text.tsx",
+      "type": "registry:component",
+      "content": "\"use client\"\n\nimport { useReducedMotion } from \"motion/react\"\nimport { useCallback, useEffect, useRef, useState } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst GLYPHS = \"ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&*+=<>/\"\n\nexport type ScrambleTextProps = {\n  /** The final text. */\n  text: string\n  /** Milliseconds for the whole decode. */\n  duration?: number\n  className?: string\n}\n\n/** Text that decodes from random glyphs, left to right, on hover or focus. */\nexport function ScrambleText({\n  text = \"\",\n  duration = 700,\n  className,\n}: ScrambleTextProps) {\n  const [shown, setShown] = useState(text)\n  const frame = useRef<number | null>(null)\n  const reduce = useReducedMotion()\n\n  const run = useCallback(() => {\n    if (reduce) return\n    if (frame.current) cancelAnimationFrame(frame.current)\n    const start = performance.now()\n    const tick = (now: number) => {\n      const t = Math.min(1, (now - start) / duration)\n      const settled = Math.floor(t * text.length)\n      setShown(\n        text\n          .split(\"\")\n          .map((ch, i) =>\n            ch === \" \" || i < settled\n              ? ch\n              : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]\n          )\n          .join(\"\")\n      )\n      if (t < 1) frame.current = requestAnimationFrame(tick)\n    }\n    frame.current = requestAnimationFrame(tick)\n  }, [text, duration, reduce])\n\n  useEffect(\n    () => () => {\n      if (frame.current) cancelAnimationFrame(frame.current)\n    },\n    []\n  )\n\n  return (\n    <span\n      className={cn(\n        \"cursor-pointer rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n        className\n      )}\n      onPointerEnter={run}\n      onFocus={run}\n      tabIndex={0}\n      aria-label={text}\n    >\n      <span aria-hidden=\"true\">{shown}</span>\n    </span>\n  )\n}\n\nexport default ScrambleText",
+      "target": "components/text/scramble-text/scramble-text.tsx"
+    }
+  ],
+  "version": "0.1.0+6c2269d35fd5",
+  "generatedAt": "2026-11-28T18:33:36.529Z"
+}

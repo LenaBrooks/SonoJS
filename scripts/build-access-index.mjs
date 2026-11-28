@@ -42,6 +42,9 @@ function surfaceFromItem(item) {
   if (type === "registry:cursor" || filePath.includes("/cursors/")) {
     return "cursors"
   }
+  if (type === "registry:text" || filePath.includes("/text/")) {
+    return "text"
+  }
   if (type === "registry:chart" || filePath.includes("/charts/")) {
     return "charts"
   }
@@ -74,6 +77,8 @@ function hrefForRegistry(item, surface) {
   switch (surface) {
     case "cursors":
       return `/cursors/${name}`
+    case "text":
+      return `/text/${name}`
     case "charts":
       return `/charts/view/${name}`
     case "ai":

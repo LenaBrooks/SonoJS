@@ -1,0 +1,50 @@
+.ring-spin-text {
+  position: relative;
+  margin: 0 auto;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.ring-spin-text__tilt,
+.ring-spin-text__plane,
+.ring-spin-text__ring {
+  position: absolute;
+  inset: 0;
+}
+
+.ring-spin-text__tilt {
+  transform-style: preserve-3d;
+}
+
+.ring-spin-text__plane {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ring-spin-text__letter {
+  position: absolute;
+  inset: 0;
+  display: inline-block;
+  white-space: pre;
+}
+
+.ring-spin-text[data-settled] .ring-spin-text__letter {
+  transition: transform 0.5s cubic-bezier(0, 0, 0, 1);
+}
+
+.ring-spin-text__line {
+  position: absolute;
+  inset: 1.3em;
+  border: 0 solid currentColor;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.ring-spin-text__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -129,6 +129,11 @@ Ask before changing MCP config outside this project.`,
               description: "Pointer effects and trails.",
             },
             {
+              href: "/text",
+              label: "Text",
+              description: "Animated typography and text effects.",
+            },
+            {
               href: "/backgrounds",
               label: "Backgrounds",
               description: "Animated HTML scenes.",

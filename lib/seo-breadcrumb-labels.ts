@@ -5,6 +5,7 @@ import { getBlocksCurrentLabel } from "@/lib/blocks-nav"
 import { getCarouselsCurrentLabel } from "@/lib/carousels-nav"
 import { getChartsCurrentLabel } from "@/lib/charts-nav"
 import { getCursorsCurrentLabel } from "@/lib/cursors-nav"
+import { getTextCurrentLabel } from "@/lib/text-nav"
 import { getDocsGuideBreadcrumbTitle } from "@/lib/docs-guide-titles"
 import { getDocsCurrentLabel, isComponentsDocsPath } from "@/lib/docs-nav"
 import { getLegalCurrentLabel } from "@/lib/legal-nav"
@@ -46,6 +47,9 @@ export function isBreadcrumbEligiblePath(pathname: string): boolean {
   if (normalized.startsWith("/cursors/view")) {
     return false
   }
+  if (normalized.startsWith("/text/view")) {
+    return false
+  }
   return true
 }
 
@@ -69,6 +73,9 @@ export function resolveBreadcrumbLeafLabel(pathname: string): string | undefined
 
   const cursors = getCursorsCurrentLabel(normalized)
   if (cursors) return cursors
+
+  const text = getTextCurrentLabel(normalized)
+  if (text) return text
 
   const backgrounds = getBackgroundsCurrentLabel(normalized)
   if (backgrounds) return backgrounds

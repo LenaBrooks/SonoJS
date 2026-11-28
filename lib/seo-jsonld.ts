@@ -101,6 +101,7 @@ const SECTION_LABELS: Record<string, string> = {
   "3d": "3D",
   carousels: "Carousels",
   cursors: "Cursors",
+  text: "Text",
   tools: "Tools",
   templates: "Templates",
   websites: "Websites",
@@ -148,6 +149,10 @@ export function isBreadcrumbLinkedPath(
 
   // Cursor mid-segment without a page
   if (parts[0] === "cursors" && parts.length === 2 && parts[1] === "view") {
+    return false
+  }
+
+  if (parts[0] === "text" && parts.length === 2 && parts[1] === "view") {
     return false
   }
 
